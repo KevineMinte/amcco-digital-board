@@ -1,0 +1,1921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><!-- AMCCO DIGITAL TEAM BOARD BUILD 1778218920844348179 -->
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Amcco Digital — Team Board</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+/* ============================================================
+   AMCCO DIGITAL TEAM BOARD
+   Paste your Supabase credentials below (lines ~30-31)
+   ============================================================ */
+:root {
+  --bg: #0f1117;
+  --bg2: #181c27;
+  --bg3: #1e2334;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --text: #e8eaf0;
+  --text2: #8b90a0;
+  --text3: #555b6e;
+  --accent: #3d7eff;
+  --accent2: #2d5fd4;
+  --green: #22c55e;
+  --amber: #f59e0b;
+  --red: #ef4444;
+  --purple: #a855f7;
+  --teal: #14b8a6;
+  --pink: #ec4899;
+  --radius: 10px;
+  --radius-lg: 14px;
+  --font: 'DM Sans', sans-serif;
+  --mono: 'DM Mono', monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14px;min-height:100vh;line-height:1.5;}
+a{color:var(--accent);text-decoration:none;}
+a:hover{text-decoration:underline;}
+
+/* Layout */
+.app{display:flex;flex-direction:column;min-height:100vh;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:56px;background:var(--bg2);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;}
+.topbar-logo{font-size:15px;font-weight:600;letter-spacing:0.02em;color:var(--text);}
+.topbar-logo span{color:var(--accent);}
+.topbar-right{display:flex;gap:10px;align-items:center;}
+.main{display:flex;flex:1;}
+.sidebar{width:200px;background:var(--bg2);border-right:1px solid var(--border);padding:16px 0;flex-shrink:0;position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto;}
+.sidebar-section{margin-bottom:4px;padding:0 12px;}
+.sidebar-label{font-size:10px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em;padding:8px 4px 4px;}
+.nav-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:8px;cursor:pointer;color:var(--text2);font-size:13px;transition:all 0.15s;border:none;background:none;width:100%;text-align:left;}
+.nav-item:hover{background:var(--bg3);color:var(--text);}
+.nav-item.active{background:rgba(61,126,255,0.15);color:var(--accent);}
+.nav-item .icon{font-size:15px;width:18px;text-align:center;}
+.content{flex:1;padding:24px;overflow-x:hidden;max-width:1200px;}
+
+/* Role selector */
+.role-select-wrap{position:relative;}
+.role-select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:6px 30px 6px 10px;border-radius:8px;font-family:var(--font);font-size:13px;cursor:pointer;appearance:none;}
+.role-select:focus{outline:none;border-color:var(--accent);}
+
+/* Cards */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px;}
+.card-sm{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px;}
+
+/* Metrics row */
+.metrics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:20px;}
+.metric{background:var(--bg3);border-radius:var(--radius);padding:14px 16px;}
+.metric-label{font-size:11px;color:var(--text2);margin-bottom:4px;}
+.metric-val{font-size:24px;font-weight:600;line-height:1;}
+.metric-sub{font-size:11px;color:var(--text3);margin-top:4px;}
+
+/* Section headers */
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.section-title{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em;}
+
+/* Member card */
+.member-block{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);margin-bottom:16px;overflow:hidden;}
+.member-header{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--border);}
+.avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0;}
+.member-name{font-weight:600;font-size:14px;}
+.member-role{font-size:11px;color:var(--text2);}
+.member-body{padding:14px 18px;}
+.member-stats{display:flex;gap:16px;margin-left:auto;align-items:center;}
+.stat-chip{font-size:11px;color:var(--text2);}
+.stat-chip strong{color:var(--text);font-weight:600;}
+
+/* Task row */
+.task-item{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);}
+.task-item:last-child{border-bottom:none;padding-bottom:0;}
+.task-check{width:16px;height:16px;border-radius:4px;border:1.5px solid var(--border2);flex-shrink:0;margin-top:1px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;}
+.task-check.done{background:var(--green);border-color:var(--green);}
+.task-check.inprog{background:var(--accent);border-color:var(--accent);}
+.task-check.blocked{background:var(--red);border-color:var(--red);}
+.task-body{flex:1;min-width:0;}
+.task-name{font-size:13px;font-weight:500;}
+.task-name.done-text{text-decoration:line-through;color:var(--text2);}
+.task-meta{font-size:11px;color:var(--text3);margin-top:2px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.task-link{font-size:11px;color:var(--accent);}
+.task-right{display:flex;gap:6px;align-items:center;flex-shrink:0;}
+.badge{display:inline-flex;align-items:center;font-size:10px;font-weight:500;padding:2px 7px;border-radius:99px;}
+.badge-high{background:rgba(239,68,68,0.15);color:#fca5a5;}
+.badge-medium{background:rgba(245,158,11,0.15);color:#fcd34d;}
+.badge-low{background:rgba(34,197,94,0.15);color:#86efac;}
+.badge-routine{background:rgba(61,126,255,0.12);color:#93c5fd;}
+.badge-done{background:rgba(34,197,94,0.15);color:#86efac;}
+.badge-inprog{background:rgba(61,126,255,0.12);color:#93c5fd;}
+.badge-todo{background:rgba(139,144,160,0.12);color:var(--text2);}
+.badge-blocked{background:rgba(239,68,68,0.15);color:#fca5a5;}
+
+/* Progress bar */
+.progress-wrap{margin:8px 0;}
+.progress-label{display:flex;justify-content:space-between;font-size:11px;color:var(--text2);margin-bottom:4px;}
+.progress-bar{height:4px;background:var(--bg3);border-radius:99px;overflow:hidden;}
+.progress-fill{height:100%;border-radius:99px;transition:width 0.4s;}
+
+/* Mutation check-ins */
+.mutation-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:8px 0;}
+.mutation-slot{background:var(--bg3);border-radius:8px;padding:10px;text-align:center;border:1px solid var(--border);}
+.mutation-slot.done-ok{border-color:rgba(34,197,94,0.3);background:rgba(34,197,94,0.05);}
+.mutation-slot.done-nc{border-color:rgba(245,158,11,0.3);background:rgba(245,158,11,0.05);}
+.mutation-slot.overdue{border-color:rgba(239,68,68,0.4);background:rgba(239,68,68,0.07);animation:pulse 2s infinite;}
+.mutation-slot.upcoming{opacity:0.5;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.7;}}
+.mutation-time{font-size:10px;color:var(--text2);margin-bottom:4px;}
+.mutation-status{font-size:11px;font-weight:600;}
+.mutation-note{font-size:10px;color:var(--text3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+/* QC note */
+.qc-note{background:rgba(61,126,255,0.07);border:1px solid rgba(61,126,255,0.2);border-radius:8px;padding:8px 10px;margin-top:6px;font-size:12px;}
+.qc-note-header{font-size:10px;color:var(--accent);font-weight:600;margin-bottom:3px;}
+.qc-reply{background:rgba(34,197,94,0.07);border:1px solid rgba(34,197,94,0.2);border-radius:8px;padding:8px 10px;margin-top:4px;font-size:12px;}
+.qc-reply-header{font-size:10px;color:var(--green);font-weight:600;margin-bottom:3px;}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--border2);background:var(--bg3);color:var(--text);transition:all 0.15s;}
+.btn:hover{border-color:var(--border2);background:var(--bg2);filter:brightness(1.1);}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:#fff;}
+.btn-primary:hover{background:var(--accent2);border-color:var(--accent2);}
+.btn-sm{padding:4px 10px;font-size:11px;border-radius:6px;}
+.btn-ghost{background:none;border-color:transparent;color:var(--text2);}
+.btn-ghost:hover{background:var(--bg3);color:var(--text);border-color:var(--border);}
+
+/* Modal */
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-lg);width:100%;max-width:500px;max-height:90vh;overflow-y:auto;}
+.modal-header{padding:18px 20px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.modal-title{font-size:15px;font-weight:600;}
+.modal-body{padding:18px 20px;}
+.modal-footer{padding:14px 20px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end;}
+
+/* Forms */
+.form-group{margin-bottom:14px;}
+.form-label{display:block;font-size:12px;font-weight:500;color:var(--text2);margin-bottom:5px;}
+.form-control{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:8px 12px;font-family:var(--font);font-size:13px;color:var(--text);}
+.form-control:focus{outline:none;border-color:var(--accent);}
+textarea.form-control{resize:vertical;min-height:72px;line-height:1.5;}
+select.form-control{cursor:pointer;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+
+/* In-tray */
+.intray-item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);}
+.intray-item:last-child{border-bottom:none;}
+.intray-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px;}
+
+/* Weekly table */
+.week-table{width:100%;border-collapse:collapse;font-size:12px;}
+.week-table th{text-align:left;padding:8px 10px;color:var(--text3);font-weight:500;border-bottom:1px solid var(--border);font-size:11px;}
+.week-table td{padding:9px 10px;border-bottom:1px solid var(--border);vertical-align:middle;}
+.week-table tr:last-child td{border-bottom:none;}
+.week-table tr:hover td{background:var(--bg3);}
+
+/* Leaderboard (owner only) */
+.lb-row{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--bg3);border-radius:var(--radius);margin-bottom:6px;}
+.lb-rank{font-size:18px;font-weight:700;width:28px;color:var(--text3);font-family:var(--mono);}
+.lb-rank.gold{color:#f59e0b;}
+.lb-rank.silver{color:#94a3b8;}
+.lb-rank.bronze{color:#92400e;}
+.lb-bar-wrap{flex:1;}
+.lb-name{font-weight:600;font-size:13px;margin-bottom:4px;}
+.lb-pts{font-size:11px;color:var(--text2);}
+.lb-score{font-size:20px;font-weight:700;font-family:var(--mono);color:var(--accent);}
+
+/* Reports */
+.platform-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-bottom:16px;}
+.platform-card{background:var(--bg3);border-radius:var(--radius);padding:12px;}
+.platform-name{font-size:11px;color:var(--text2);margin-bottom:4px;}
+.platform-num{font-size:20px;font-weight:700;font-family:var(--mono);}
+.platform-change{font-size:10px;color:var(--text3);margin-top:2px;}
+
+/* Toast */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--bg2);border:1px solid var(--border2);border-radius:10px;padding:12px 16px;font-size:13px;z-index:500;box-shadow:0 4px 24px rgba(0,0,0,0.4);transform:translateY(80px);opacity:0;transition:all 0.3s;}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast.success{border-left:3px solid var(--green);}
+.toast.error{border-left:3px solid var(--red);}
+
+/* Tabs */
+.tabs{display:flex;gap:2px;background:var(--bg3);border-radius:10px;padding:3px;margin-bottom:20px;}
+.tab-btn{flex:1;padding:7px;border-radius:8px;border:none;background:none;color:var(--text2);font-family:var(--font);font-size:12px;font-weight:500;cursor:pointer;transition:all 0.15s;}
+.tab-btn.active{background:var(--bg2);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,0.3);}
+
+/* Overdue alert */
+.alert{display:flex;gap:10px;padding:10px 14px;border-radius:8px;margin-bottom:12px;font-size:13px;}
+.alert-warn{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#fca5a5;}
+.alert-info{background:rgba(61,126,255,0.1);border:1px solid rgba(61,126,255,0.2);color:#93c5fd;}
+
+/* Divider */
+.divider{height:1px;background:var(--border);margin:16px 0;}
+
+/* Tomorrow plan */
+.tomorrow-box{background:rgba(61,126,255,0.05);border:1px solid rgba(61,126,255,0.15);border-radius:var(--radius);padding:12px;margin-top:12px;}
+.tomorrow-title{font-size:11px;font-weight:600;color:var(--accent);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.06em;}
+
+/* Empty */
+.empty{text-align:center;padding:40px 20px;color:var(--text3);font-size:13px;}
+.empty-icon{font-size:32px;margin-bottom:10px;}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:99px;}
+
+/* Responsive */
+@media(max-width:768px){
+  .sidebar{display:none;}
+  .content{padding:16px;}
+  .form-row{grid-template-columns:1fr;}
+  .mutation-grid{grid-template-columns:repeat(2,1fr);}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-logo">Amcco<span>Digital</span> · Team Board</div>
+  <div class="topbar-right">
+    <div id="live-clock" style="font-family:var(--mono);font-size:12px;color:var(--text3);"></div>
+    <div id="sync-indicator" style="font-size:11px;color:var(--text3);">● Live</div>
+    <select class="role-select" id="role-select" onchange="switchRole(this.value)">
+      <option value="owner">Kevin (Digital Lead)</option>
+      <option value="Bonface">Bonface</option>
+      <option value="Bethwel">Bethwel</option>
+      <option value="Thiga">Thiga</option>
+      <option value="Susan">Susan</option>
+    </select>
+  </div>
+</div>
+
+<div class="main">
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Main</div>
+    <button class="nav-item active" onclick="navTo('board',this)">
+      <span class="icon">📋</span> Board
+    </button>
+    <button class="nav-item" onclick="navTo('intray',this)">
+      <span class="icon">📥</span> In-tray
+      <span id="intray-badge" style="margin-left:auto;background:var(--accent);color:#fff;font-size:9px;padding:1px 6px;border-radius:99px;display:none;"></span>
+    </button>
+    <button class="nav-item" onclick="navTo('weekly',this)">
+      <span class="icon">📅</span> Weekly
+    </button>
+    <button class="nav-item" id="nav-reports" onclick="navTo('reports',this)" style="display:none;">
+      <span class="icon">📊</span> Reports
+    </button>
+    <button class="nav-item" id="nav-mytasks" onclick="navTo('mytasks',this)" style="display:none;">
+      <span class="icon">✅</span> My Tasks
+    </button>
+    <button class="nav-item" id="nav-calendar" onclick="navTo('calendar',this)" style="display:none;">
+      <span class="icon">📆</span> Calendar
+    </button>
+    <button class="nav-item" id="nav-dashboard" onclick="openDashboardWithPin()" style="display:none;">
+      <span class="icon">🎯</span> My Dashboard
+    </button>
+  </div>
+  <div class="sidebar-section" style="margin-top:12px;">
+    <div class="sidebar-label">Team</div>
+    <div id="sidebar-members"></div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="content" id="content-area">
+  <div class="empty"><div class="empty-icon">⏳</div>Connecting to database...</div>
+</div>
+</div>
+</div>
+
+<!-- MODAL CONTAINER -->
+<div id="modal-container"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   CONFIGURATION — PASTE YOUR SUPABASE DETAILS HERE
+   ============================================================ */
+const SUPABASE_URL = 'https://xvdduyzjemdphfipakkm.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_lvOt1II43bQLQGI4sPKhTA_ZW0A-T0Q';
+
+/* ============================================================
+   APP CONSTANTS
+   ============================================================ */
+const MEMBERS = [
+  { id:'Bonface', name:'Bonface', role:'Photographer & Graphic Designer', color:'#7c3aed', bg:'rgba(124,58,237,0.15)', initials:'BO',
+    targets:{ ecards:5 },
+    recurring:['eCards delivery','Mutation updates (4-hourly)','Video template supplementing'],
+    extras:['Print design','Photography'] },
+  { id:'Bethwel', name:'Bethwel', role:'Videographer · Kikuyu Branch', color:'#0ea5e9', bg:'rgba(14,165,233,0.15)', initials:'BE',
+    targets:{ shorts:3, longform:1 },
+    recurring:['Shoot video content','Video editing','Upload & file footage'] },
+  { id:'Thiga',  name:'Thiga',  role:'Videographer · Ngong Branch',   color:'#f59e0b', bg:'rgba(245,158,11,0.15)', initials:'TH',
+    targets:{ shorts:3, longform:1 },
+    recurring:['Shoot video content','Video editing','Upload & file footage'] },
+  { id:'Susan',  name:'Susan',  role:'Social Media Manager',            color:'#ec4899', bg:'rgba(236,72,153,0.15)', initials:'SU',
+    targets:{ stories:15 },
+    recurring:['Post & schedule content','Share leads report','Update leads by branch','Respond to comments'],
+    daySpecific:{ Mon:'Leads evaluation with sales manager', Tue:'Staff engagement report (WhatsApp)', Wed:'Staff engagement report (socials)' } }
+];
+
+const MUTATION_TIMES = ['08:00','12:00','16:00','20:00'];
+const PLATFORMS = ['Facebook','Instagram','Threads','TikTok','X (Twitter)','YouTube','LinkedIn','WhatsApp Channel'];
+const BRANCHES = ['Kikuyu','Ngong','Head Office','Online','Referral','Walk-in'];
+const LEAD_SOURCES = ['Social Media','WhatsApp','Facebook','Instagram','Tidio','Referral','Walk-in','Website','Event','Cold Call','Other'];
+
+const POINTS_CONFIG = {
+  task_completed: 10,
+  task_with_link: 5,
+  preplanned: 10,
+  no_blocked_overnight: 10,
+  ecards_target: 20,
+  stories_target: 20,
+  shorts_target: 15,
+  longform_target: 15,
+  leads_updated: 10,
+  content_scheduled: 10
+};
+
+let currentRole = 'owner';
+let currentView = 'board';
+let state = { onLeave: {} }; // tracks who is on leave by date
+let db = { tasks:[], intray:[], mutations:[], tomorrow:[], points:[], leads:[], social:[], content:[], kevinTasks:[] };
+let refreshInterval = null;
+
+/* ============================================================
+   SUPABASE API
+   ============================================================ */
+async function sbFetch(path, method='GET', body=null){
+  const url = SUPABASE_URL.replace(/\/$/, '') + '/rest/v1/' + path;
+  const opts = {
+    method,
+    headers:{
+      'apikey': SUPABASE_KEY,
+      'Authorization': 'Bearer ' + SUPABASE_KEY,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=representation',
+      'X-Client-Info': 'amcco-board/1.0'
+    }
+  };
+  if(body) opts.body = JSON.stringify(body);
+  const r = await fetch(url, opts);
+  if(!r.ok){
+    const t = await r.text();
+    console.error('SB error', r.status, t, 'URL:', url);
+    throw new Error('SB '+r.status+': '+t);
+  }
+  if(r.status === 204) return [];
+  const ct = r.headers.get('content-type')||'';
+  if(ct.includes('json')) return r.json();
+  return [];
+}
+const sbGet=(table,params='')=>sbFetch(table+(params?'?'+params:''));
+const sbInsert=(table,data)=>sbFetch(table, 'POST', data);
+const sbUpdate=(table,id,data)=>sbFetch(table+'?id=eq.'+id, 'PATCH', data);
+const sbDelete=(table,id)=>sbFetch(table+'?id=eq.'+id, 'DELETE');
+
+// Quick connection test
+async function testConnection(){
+  try {
+    const url = SUPABASE_URL.replace(/\/$/, '')+'/rest/v1/tasks?limit=1';
+    console.log('Testing connection to:', url);
+    const r = await fetch(url, {
+      headers:{ 
+        'apikey': SUPABASE_KEY, 
+        'Authorization': 'Bearer ' + SUPABASE_KEY,
+        'X-Client-Info': 'amcco-board/1.0'
+      }
+    });
+    console.log('Connection test status:', r.status);
+    const body = await r.text();
+    console.log('Response body:', body.substring(0,200));
+    if(r.status === 401) throw new Error('Invalid API key — status 401: '+body.substring(0,100));
+    if(r.status === 404) throw new Error('Table not found — run the SQL setup');
+    if(r.status === 400) throw new Error('Bad request 400: '+body.substring(0,100));
+    if(!r.ok) throw new Error('HTTP '+r.status+': '+body.substring(0,100));
+    return true;
+  } catch(e) {
+    if(e.message.includes('fetch')) throw new Error('Cannot reach Supabase — network error: '+e.message);
+    console.error('Connection test failed:', e.message);
+    throw e;
+  }
+}
+
+/* ============================================================
+   INIT & DATA LOADING
+   ============================================================ */
+async function init(){
+  updateClock();
+  setInterval(updateClock,1000);
+
+  // Show connecting state
+  document.getElementById('content-area').innerHTML = `
+    <div style="text-align:center;padding:60px 20px;color:var(--text2);">
+      <div style="font-size:32px;margin-bottom:12px;">⏳</div>
+      <div style="font-size:15px;font-weight:600;margin-bottom:8px;">Connecting to database...</div>
+      <div style="font-size:12px;color:var(--text3);">Trying: ${SUPABASE_URL}</div>
+    </div>`;
+
+  try {
+    await testConnection();
+    await loadAll();
+    await seedRecurringTasks();
+  } catch(e) {
+    console.error('Init load failed:', e);
+    let reason = e.message || 'Unknown error';
+    let tip = 'Check your Supabase URL and API key are correct, and that your project is active.';
+    if(reason.includes('401')) tip = '❌ Invalid API key — double check the anon key in the HTML file.';
+    if(reason.includes('404')) tip = '❌ Tables not found — make sure you ran the SQL setup script in Supabase.';
+    if(reason.includes('Failed to fetch') || reason.includes('NetworkError')) tip = '❌ Cannot reach Supabase — check the URL ends in .supabase.co (not .com), and your internet connection.';
+    if(reason.includes('403')) tip = '❌ Access denied — Row Level Security may be blocking access. Re-run the SQL setup script.';
+
+    document.getElementById('content-area').innerHTML = `
+      <div style="text-align:center;padding:60px 20px;max-width:500px;margin:0 auto;">
+        <div style="font-size:36px;margin-bottom:16px;">🔴</div>
+        <div style="font-size:16px;font-weight:700;margin-bottom:10px;color:var(--text);">Database connection failed</div>
+        <div style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:10px;padding:14px;margin-bottom:16px;text-align:left;">
+          <div style="font-size:11px;color:var(--text3);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.05em;">Error</div>
+          <div style="font-size:13px;color:#fca5a5;font-family:var(--mono);">${reason}</div>
+        </div>
+        <div style="background:var(--bg3);border-radius:10px;padding:14px;margin-bottom:16px;text-align:left;">
+          <div style="font-size:11px;color:var(--text3);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.05em;">What to fix</div>
+          <div style="font-size:13px;color:var(--text2);">${tip}</div>
+        </div>
+        <div style="background:var(--bg3);border-radius:10px;padding:14px;margin-bottom:20px;text-align:left;">
+          <div style="font-size:11px;color:var(--text3);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.05em;">Your configured URL</div>
+          <div style="font-size:12px;color:var(--text2);font-family:var(--mono);word-break:break-all;">${SUPABASE_URL}</div>
+        </div>
+        <button class="btn btn-primary" onclick="location.reload()">🔄 Try again</button>
+      </div>`;
+    return;
+  }
+  render();
+  refreshInterval = setInterval(async()=>{
+    try { await loadAll(); await seedRecurringTasks(); render(); updateSyncIndicator(); } catch(e){ console.warn('Refresh failed',e); }
+  },60000);
+}
+
+async function loadAll(){
+  const today = todayStr();
+  const safe = async (fn) => { try { const r = await fn(); return r||[]; } catch(e){ console.warn('fetch failed',e); return []; } };
+  const [tasks,intray,mutations,tomorrow,leads,social,content,kevinTasks,leaveData] = await Promise.all([
+    safe(()=>sbGet('tasks','member_id=neq.Kevin&order=created_at.desc')),
+    safe(()=>sbGet('intray','order=created_at.desc')),
+    safe(()=>sbGet('mutations','date=eq.'+today+'&order=slot_time.asc')),
+    safe(()=>sbGet('tomorrow_plans','date=eq.'+today+'&order=created_at.asc')),
+    safe(()=>sbGet('leads_log','order=week_start.desc')),
+    safe(()=>sbGet('social_metrics','order=week_start.desc')),
+    safe(()=>sbGet('content_log','order=created_at.desc')),
+    safe(()=>sbGet('tasks','member_id=eq.Kevin&order=created_at.desc')),
+    safe(()=>sbGet('leave_log','order=date.desc'))
+  ]);
+  db.tasks = tasks;
+  db.intray = intray;
+  db.mutations = mutations;
+  db.tomorrow = tomorrow;
+  db.leads = leads;
+  db.social = social;
+  db.content = content;
+  db.kevinTasks = kevinTasks;
+  // Build on-leave lookup
+  state.onLeave = {};
+  (leaveData||[]).forEach(l=>{ if(!state.onLeave[l.date]) state.onLeave[l.date]={}; state.onLeave[l.date][l.member_id]=true; });
+  updateIntrayBadge();
+}
+
+/* ============================================================
+   RECURRING TASKS — AUTO-SEED DAILY
+   ============================================================ */
+const RECURRING = {
+  Bonface: [
+    { task_name:'eCards delivery',              task_type:'ecard',   priority:'routine' },
+    { task_name:'Mutation updates (4-hourly)',   task_type:'general', priority:'routine' },
+    { task_name:'Video template supplementing',  task_type:'general', priority:'routine' },
+  ],
+  Bethwel: [
+    { task_name:'Shoot video content – Kikuyu', task_type:'general', priority:'routine' },
+    { task_name:'Video editing',                task_type:'general', priority:'routine' },
+    { task_name:'Upload & file footage',        task_type:'general', priority:'routine' },
+  ],
+  Thiga: [
+    { task_name:'Shoot video content – Ngong',  task_type:'general', priority:'routine' },
+    { task_name:'Video editing',                task_type:'general', priority:'routine' },
+    { task_name:'Upload & file footage',        task_type:'general', priority:'routine' },
+  ],
+  Susan: [
+    { task_name:'Post & schedule content',      task_type:'content', priority:'routine' },
+    { task_name:'Share leads report',           task_type:'leads',   priority:'routine' },
+    { task_name:'Update leads by branch',       task_type:'leads',   priority:'routine' },
+    { task_name:'Respond to comments',          task_type:'general', priority:'routine' },
+  ]
+};
+
+// Day-specific extras for Susan
+const SUSAN_DAY = {
+  Mon: { task_name:'Leads evaluation with sales manager', task_type:'general', priority:'high' },
+  Tue: { task_name:'Staff engagement report (WhatsApp)',  task_type:'general', priority:'high' },
+  Wed: { task_name:'Staff engagement report (socials)',   task_type:'general', priority:'high' },
+};
+
+async function seedRecurringTasks(){
+  const today = todayStr();
+  const day = dayName();
+  const existingNames = db.tasks.filter(t=>t.date===today).map(t=>t.task_name);
+
+  const toInsert = [];
+  for(const [memberId, tasks] of Object.entries(RECURRING)){
+    for(const t of tasks){
+      if(!existingNames.includes(t.task_name)){
+        toInsert.push({ ...t, member_id:memberId, status:'todo', date:today, is_recurring:true });
+      }
+    }
+  }
+  // Susan's day-specific task
+  if(SUSAN_DAY[day] && !existingNames.includes(SUSAN_DAY[day].task_name)){
+    toInsert.push({ ...SUSAN_DAY[day], member_id:'Susan', status:'todo', date:today, is_recurring:true });
+  }
+
+  if(toInsert.length > 0){
+    const res = await sbInsert('tasks', toInsert);
+    if(res) db.tasks = [...db.tasks, ...res];
+  }
+}
+
+/* ============================================================
+   PIN PROTECTION FOR DASHBOARD
+   ============================================================ */
+const DASHBOARD_PIN = '4321'; // Kevin's private dashboard PIN
+let dashboardUnlocked = false;
+
+function openDashboardWithPin(){
+  if(dashboardUnlocked){ navTo('dashboard', document.getElementById('nav-dashboard')); return; }
+  openModal(`<div class="modal-backdrop" onclick="if(event.target===this)closeModal()">
+    <div class="modal" style="max-width:320px;">
+      <div class="modal-header">
+        <div class="modal-title">🔐 Dashboard — Digital Lead only</div>
+        <button class="btn btn-ghost btn-sm" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Enter your PIN to continue</label>
+          <input class="form-control" id="pin-input" type="password" maxlength="6"
+            placeholder="Enter PIN" autofocus
+            onkeydown="if(event.key==='Enter')checkPin()"
+            style="font-size:20px;letter-spacing:6px;text-align:center;"/>
+        </div>
+        <div id="pin-error" style="color:var(--red);font-size:12px;text-align:center;display:none;margin-top:6px;">
+          Incorrect PIN. Try again.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="checkPin()">Unlock</button>
+      </div>
+    </div>
+  </div>`);
+  setTimeout(()=>{ const el=document.getElementById('pin-input'); if(el) el.focus(); },100);
+}
+
+function checkPin(){
+  const val = document.getElementById('pin-input')?.value;
+  if(val === DASHBOARD_PIN){
+    dashboardUnlocked = true;
+    closeModal();
+    navTo('dashboard', document.getElementById('nav-dashboard'));
+  } else {
+    const err = document.getElementById('pin-error');
+    if(err){ err.style.display='block'; }
+    const inp = document.getElementById('pin-input');
+    if(inp){ inp.value=''; inp.focus(); }
+  }
+}
+
+function todayStr(){ return new Date().toISOString().split('T')[0]; }
+function nowHHMM(){ const d=new Date(); return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); }
+function dayName(){ return ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][new Date().getDay()]; }
+
+function updateClock(){
+  const d=new Date();
+  document.getElementById('live-clock').textContent = d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+}
+function updateSyncIndicator(){
+  const el=document.getElementById('sync-indicator');
+  el.textContent='● Synced '+new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+  el.style.color='var(--green)';
+  setTimeout(()=>{el.style.color='var(--text3)';el.textContent='● Live';},3000);
+}
+function updateIntrayBadge(){
+  const open=db.intray.filter(i=>i.status==='open').length;
+  const b=document.getElementById('intray-badge');
+  if(open>0){b.textContent=open;b.style.display='';}else{b.style.display='none';}
+}
+
+/* ============================================================
+   NAVIGATION & ROLE
+   ============================================================ */
+function switchRole(role){
+  currentRole=role;
+  document.getElementById('nav-reports').style.display=(role==='owner'||role==='Susan')?'':'none';
+  document.getElementById('nav-dashboard').style.display=(role==='owner')?'':'none';
+  document.getElementById('nav-mytasks').style.display=(role==='owner')?'':'none';
+  document.getElementById('nav-calendar').style.display=(role==='owner')?'':'none';
+  if(role!=='owner' && (currentView==='dashboard'||currentView==='mytasks'||currentView==='calendar')) currentView='board';
+  dashboardUnlocked = false;
+  renderSidebar();
+  render();
+}
+
+function navTo(view, el){
+  currentView=view;
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  if(el) el.classList.add('active');
+  render();
+}
+
+function renderSidebar(){
+  const wrap=document.getElementById('sidebar-members');
+  wrap.innerHTML=MEMBERS.map(m=>`
+    <button class="nav-item" onclick="scrollToMember('${m.id}')">
+      <span style="width:8px;height:8px;border-radius:50%;background:${m.color};flex-shrink:0;"></span>
+      ${m.name}
+    </button>`).join('');
+}
+
+function scrollToMember(id){
+  navTo('board',document.querySelector('.nav-item'));
+  setTimeout(()=>{
+    const el=document.getElementById('member-'+id);
+    if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+  },100);
+}
+
+/* ============================================================
+   RENDER ROUTER
+   ============================================================ */
+function render(){
+  const ca=document.getElementById('content-area');
+  if(currentView==='board') ca.innerHTML=renderBoard();
+  else if(currentView==='intray') ca.innerHTML=renderIntray();
+  else if(currentView==='weekly') ca.innerHTML=renderWeekly();
+  else if(currentView==='reports') ca.innerHTML=renderReports();
+  else if(currentView==='dashboard') ca.innerHTML=renderDashboard();
+  else if(currentView==='mytasks') ca.innerHTML=renderKevinTasks();
+  else if(currentView==='calendar') ca.innerHTML=renderCalendar();
+  bindEvents();
+}
+
+/* ============================================================
+   BOARD VIEW
+   ============================================================ */
+function renderBoard(){
+  const members = currentRole==='owner' ? MEMBERS : MEMBERS.filter(m=>m.id===currentRole);
+  let html='';
+
+  if(currentRole==='owner'){
+    const allTasks=db.tasks;
+    const done=allTasks.filter(t=>t.status==='done').length;
+    const ip=allTasks.filter(t=>t.status==='in-progress').length;
+    const blocked=allTasks.filter(t=>t.status==='blocked').length;
+    const openIntray=db.intray.filter(i=>i.status==='open').length;
+    html+=`<div class="metrics-grid">
+      <div class="metric"><div class="metric-label">Total tasks today</div><div class="metric-val">${allTasks.length}</div></div>
+      <div class="metric"><div class="metric-label">Done</div><div class="metric-val" style="color:var(--green);">${done}</div></div>
+      <div class="metric"><div class="metric-label">In Progress</div><div class="metric-val" style="color:var(--accent);">${ip}</div></div>
+      <div class="metric"><div class="metric-label">Blocked</div><div class="metric-val" style="color:var(--red);">${blocked}</div><div class="metric-sub">${blocked>0?'Needs attention':''}</div></div>
+      <div class="metric"><div class="metric-label">In-tray open</div><div class="metric-val">${openIntray}</div></div>
+    </div>`;
+  }
+
+  // Overdue mutation check
+  const overdueAlert = checkMutationOverdue();
+  if(overdueAlert && (currentRole==='owner'||currentRole==='Bonface')){
+    html+=`<div class="alert alert-warn">⚠️ ${overdueAlert}</div>`;
+  }
+
+  members.forEach(m=>{ html+=renderMemberBlock(m); });
+
+  // Add task button for owner
+  if(currentRole==='owner'){
+    html+=`<div style="margin-top:8px;"><button class="btn btn-primary" onclick="openAddTaskModal(null)">+ Assign Task to Member</button></div>`;
+  }
+  return html;
+}
+
+function renderMemberBlock(m){
+  const today = todayStr();
+  const isOnLeave = state.onLeave[today]?.[m.id] || false;
+  const tasks=db.tasks.filter(t=>t.member_id===m.id&&t.date===today);
+  const done=tasks.filter(t=>t.status==='done').length;
+  const total=tasks.length;
+  const pct=total?Math.round(done/total*100):0;
+  const tomorrow=db.tomorrow.filter(t=>t.member_id===m.id);
+
+  let html=`<div class="member-block" id="member-${m.id}" style="${isOnLeave?'opacity:0.6;':''}">
+    <div class="member-header">
+      <div class="avatar" style="background:${m.bg};color:${m.color};">${m.initials}</div>
+      <div style="flex:1;">
+        <div class="member-name">${m.name} ${isOnLeave?'<span style="font-size:11px;background:rgba(245,158,11,0.2);color:#f59e0b;padding:2px 8px;border-radius:99px;font-weight:500;">🏖 On Leave</span>':''}</div>
+        <div class="member-role">${m.role}</div>
+      </div>
+      <div class="member-stats">
+        <span class="stat-chip"><strong>${done}/${total}</strong> done</span>
+        <span class="stat-chip" style="color:${pct>=80?'var(--green)':pct>=50?'var(--amber)':'var(--red)'};">${pct}%</span>
+      </div>
+      ${currentRole==='owner'?`
+        <button class="btn btn-sm ${isOnLeave?'btn-primary':''}" onclick="toggleLeave('${m.id}','${today}')" title="${isOnLeave?'Mark as back':'Mark as on leave'}" style="${isOnLeave?'background:var(--amber);border-color:var(--amber);':''}">
+          ${isOnLeave?'↩ Back':'🏖 Leave'}
+        </button>
+        <button class="btn btn-sm" onclick="openAddTaskModal('${m.id}')">+ Task</button>`:''}
+      ${currentRole===m.id&&!isOnLeave?`<button class="btn btn-sm" onclick="openAddTaskModal('${m.id}')">+ Add task</button>`:''}
+    </div>
+    <div class="member-body">`;
+
+  if(isOnLeave){
+    html+=`<div class="alert alert-warn" style="margin:8px 0;">🏖 ${m.name} is on leave today. Tasks are paused and will not count towards performance scores.</div>`;
+  } else {
+
+  if(!isOnLeave){
+    // Progress bar
+    html+=`<div class="progress-wrap">
+      <div class="progress-label"><span>Today's progress</span><span>${pct}%</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:${pct>=80?'var(--green)':pct>=50?'var(--amber)':'var(--accent)'}"></div></div>
+    </div>`;
+    // Role-specific targets
+    html+=renderTargets(m);
+    // Mutation check-ins for Bonface
+    if(m.id==='Bonface') html+=renderMutationSlots();
+    // Tasks
+    if(tasks.length){
+      html+=`<div class="divider"></div><div class="section-header"><span class="section-title">Today's tasks</span></div>`;
+      tasks.forEach(t=>{ html+=renderTaskItem(t,m); });
+    } else {
+      html+=`<div class="divider"></div><div style="font-size:12px;color:var(--text3);padding:8px 0;">No tasks yet for today.</div>`;
+    }
+  }
+
+  // Tomorrow plan
+  if(!isOnLeave){
+    html+=`<div class="tomorrow-box">
+      <div class="tomorrow-title">📝 Tomorrow's plan ${tomorrow.length?`(${tomorrow.length} task${tomorrow.length>1?'s':''})`:'— not filled yet'}</div>`;
+    if(tomorrow.length){
+      tomorrow.forEach(t=>{
+        html+=`<div style="font-size:12px;padding:3px 0;color:var(--text2);">• ${escHtml(t.task_name)} ${t.drive_link?`<a href="${escHtml(t.drive_link)}" target="_blank" class="task-link">🔗 link</a>`:''}</div>`;
+      });
+    }
+    if(currentRole===m.id||currentRole==='owner'){
+      html+=`<button class="btn btn-ghost btn-sm" style="margin-top:8px;" onclick="openTomorrowModal('${m.id}')">+ Add tomorrow's task</button>`;
+    }
+    html+=`</div>`;
+  }
+  html+=`</div></div>`;
+  return html;
+}
+
+function renderTargets(m){
+  let html=`<div style="display:flex;gap:12px;flex-wrap:wrap;margin:10px 0;">`;
+  if(m.targets.ecards!==undefined){
+    const done=db.tasks.filter(t=>t.member_id===m.id&&t.date===todayStr()&&t.task_type==='ecard'&&t.status==='done').length;
+    html+=targetChip('eCards',done,m.targets.ecards,'var(--purple)');
+  }
+  if(m.targets.stories!==undefined){
+    const done=db.tasks.filter(t=>t.member_id===m.id&&t.date===todayStr()&&t.task_type==='story'&&t.status==='done').length;
+    html+=targetChip('Stories',done,m.targets.stories,'var(--pink)');
+  }
+  if(m.targets.shorts!==undefined){
+    const done=db.tasks.filter(t=>t.member_id===m.id&&t.date===todayStr()&&t.task_type==='short'&&t.status==='done').length;
+    html+=targetChip('Shorts',done,m.targets.shorts,'var(--accent)');
+  }
+  if(m.targets.longform!==undefined){
+    const done=db.tasks.filter(t=>t.member_id===m.id&&t.date===todayStr()&&t.task_type==='longform'&&t.status==='done').length;
+    html+=targetChip('Long-form',done,m.targets.longform,'var(--teal)');
+  }
+  html+=`</div>`;
+  return html;
+}
+
+function targetChip(label,done,target,color){
+  const pct=Math.min(100,Math.round(done/target*100));
+  return `<div style="background:var(--bg3);border-radius:8px;padding:8px 12px;min-width:90px;">
+    <div style="font-size:10px;color:var(--text3);margin-bottom:2px;">${label}</div>
+    <div style="font-size:18px;font-weight:700;color:${color};font-family:var(--mono);">${done}<span style="font-size:12px;font-weight:400;color:var(--text3);">/${target}</span></div>
+    <div class="progress-bar" style="margin-top:4px;"><div class="progress-fill" style="width:${pct}%;background:${color};"></div></div>
+  </div>`;
+}
+
+function renderMutationSlots(){
+  const now=nowHHMM();
+  let html=`<div style="margin:10px 0;">
+    <div class="section-title" style="margin-bottom:6px;">Mutation check-ins</div>
+    <div class="mutation-grid">`;
+  MUTATION_TIMES.forEach(time=>{
+    const logged=db.mutations.find(m=>m.slot_time===time);
+    const isPast=now>time;
+    const isOverdue=isPast&&!logged;
+    let cls='mutation-slot';
+    let statusTxt='Pending';
+    let icon='○';
+    if(logged){ cls+= logged.no_change?' done-nc':' done-ok'; statusTxt=logged.no_change?'No change':'Updated'; icon=logged.no_change?'—':'✓'; }
+    else if(isOverdue){ cls+=' overdue'; statusTxt='OVERDUE'; icon='!'; }
+    else { cls+=' upcoming'; }
+    const noteHtml=logged&&logged.notes?`<div class="mutation-note" title="${escHtml(logged.notes)}">${escHtml(logged.notes)}</div>`:'';
+    const btn=(currentRole==='Bonface'&&!logged&&isPast)||(currentRole==='Bonface'&&now>=time&&now<(MUTATION_TIMES[MUTATION_TIMES.indexOf(time)+1]||'23:59'))
+      ?`<button class="btn btn-ghost btn-sm" style="margin-top:4px;font-size:10px;" onclick="openMutationModal('${time}')">Log</button>`:'';
+    html+=`<div class="${cls}">
+      <div class="mutation-time">${time}</div>
+      <div class="mutation-status" style="color:${logged?(logged.no_change?'var(--amber)':'var(--green)'):(isOverdue?'var(--red)':'var(--text3)')}">${icon} ${statusTxt}</div>
+      ${noteHtml}${btn}
+    </div>`;
+  });
+  html+=`</div></div>`;
+  return html;
+}
+
+function checkMutationOverdue(){
+  const now=nowHHMM();
+  for(const t of MUTATION_TIMES){
+    if(now>t){
+      const logged=db.mutations.find(m=>m.slot_time===t);
+      if(!logged) return `Bonface has a missed mutation check-in at ${t}.`;
+    }
+  }
+  return null;
+}
+
+function renderTaskItem(t,m){
+  const statusCls={done:'done','in-progress':'inprog',blocked:'blocked',todo:''}[t.status]||'';
+  const badgeCls={'done':'badge-done','in-progress':'badge-inprog','todo':'badge-todo','blocked':'badge-blocked'}[t.status]||'badge-todo';
+  const priorityCls={'high':'badge-high','medium':'badge-medium','low':'badge-low','routine':'badge-routine'}[t.priority]||'badge-routine';
+  const canEdit=currentRole===m.id||currentRole==='owner';
+
+  let html=`<div class="task-item" data-id="${t.id}">
+    <div class="task-check ${statusCls}" onclick="${canEdit?`cycleStatus('${t.id}','${t.status}')`:''}" title="Click to update status">
+      ${t.status==='done'?'<svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>':
+        t.status==='in-progress'?'<div style="width:6px;height:6px;border-radius:50%;background:white;"></div>':
+        t.status==='blocked'?'<span style="color:white;font-size:9px;font-weight:700;">!</span>':''}
+    </div>
+    <div class="task-body">
+      <div class="task-name ${t.status==='done'?'done-text':''}">${escHtml(t.task_name)}</div>
+      <div class="task-meta">
+        <span class="badge ${priorityCls}">${t.priority}</span>
+        <span class="badge ${badgeCls}">${t.status}</span>
+        ${t.deadline?`<span>📅 ${t.deadline}</span>`:''}
+        ${t.drive_link?`<a href="${escHtml(t.drive_link)}" target="_blank" class="task-link">🔗 Drive</a>`:''}
+      </div>
+      ${t.qc_note?`<div class="qc-note"><div class="qc-note-header">QC Note from Kevin</div>${escHtml(t.qc_note)}${t.qc_reply?`<div class="qc-reply"><div class="qc-reply-header">Reply from ${m.name}</div>${escHtml(t.qc_reply)}</div>`:
+        (currentRole===m.id?`<div style="margin-top:6px;"><button class="btn btn-ghost btn-sm" onclick="openQCReplyModal('${t.id}')">Reply</button></div>`:'')}</div>`:''}`
+    ;
+    html+=`</div>
+    <div class="task-right">
+      ${canEdit&&currentRole==='owner'?`<button class="btn btn-ghost btn-sm" onclick="openQCModal('${t.id}')">QC</button>`:''}
+      ${canEdit?`<button class="btn btn-ghost btn-sm" onclick="openEditTaskModal('${t.id}')">✏️</button>`:''}
+      ${currentRole==='owner'?`<button class="btn btn-ghost btn-sm" style="color:var(--red);" onclick="deleteTask('${t.id}')">🗑</button>`:''}
+    </div>
+  </div>`;
+  return html;
+}
+
+/* ============================================================
+   IN-TRAY VIEW
+   ============================================================ */
+function renderIntray(){
+  const items = currentRole==='owner' ? db.intray : db.intray.filter(i=>i.assignee_id===currentRole);
+  const open=items.filter(i=>i.status==='open');
+  const done=items.filter(i=>i.status==='done');
+
+  let html=`<div class="section-header"><span class="section-title">In-tray</span>
+    ${currentRole==='owner'?`<button class="btn btn-primary btn-sm" onclick="openAddIntrayModal()">+ Add Deliverable</button>`:''}
+  </div>`;
+
+  if(!items.length){
+    html+=`<div class="card"><div class="empty"><div class="empty-icon">📭</div>In-tray is clear</div></div>`;
+    return html;
+  }
+
+  if(open.length){
+    html+=`<div class="section-title" style="margin-bottom:8px;">Open (${open.length})</div>`;
+    open.forEach(i=>{ html+=renderIntrayItem(i); });
+  }
+  if(done.length){
+    html+=`<div class="section-title" style="margin:16px 0 8px;">Completed (${done.length})</div>`;
+    done.forEach(i=>{ html+=renderIntrayItem(i); });
+  }
+  return html;
+}
+
+function renderIntrayItem(i){
+  const m=MEMBERS.find(x=>x.id===i.assignee_id)||{name:i.assignee_id,color:'#888',initials:'?'};
+  const priorityCls={'high':'badge-high','medium':'badge-medium','low':'badge-low'}[i.priority]||'badge-low';
+  return `<div class="card-sm" style="margin-bottom:8px;">
+    <div class="intray-item">
+      <div class="intray-dot" style="background:${m.color};"></div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-weight:600;font-size:13px;">${escHtml(i.title)}</div>
+        ${i.note?`<div style="font-size:12px;color:var(--text2);margin-top:2px;">${escHtml(i.note)}</div>`:''}
+        <div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;align-items:center;">
+          <span style="font-size:11px;color:${m.color};">→ ${m.name}</span>
+          <span class="badge ${priorityCls}">${i.priority}</span>
+          ${i.deadline?`<span style="font-size:11px;color:var(--text3);">📅 ${i.deadline}</span>`:''}
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;flex-shrink:0;">
+        <span style="font-size:10px;color:var(--text3);">${i.created_at?i.created_at.split('T')[0]:''}</span>
+        ${i.status==='open'&&(currentRole===i.assignee_id||currentRole==='owner')
+          ?`<button class="btn btn-sm" onclick="markIntrayDone('${i.id}')">✓ Done</button>`
+          :`<span class="badge badge-done">Done</span>`}
+        ${currentRole==='owner'?`<button class="btn btn-ghost btn-sm" style="color:var(--red);" onclick="deleteIntray('${i.id}')">🗑</button>`:''}
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ============================================================
+   WEEKLY VIEW
+   ============================================================ */
+function renderWeekly(){
+  let html=`<div class="section-header"><span class="section-title">Weekly overview — ${getWeekLabel()}</span></div>`;
+
+  // Per-member summary
+  html+=`<table class="week-table" style="margin-bottom:20px;">
+    <thead><tr><th>Member</th><th>Tasks planned</th><th>Tasks done</th><th>Completion</th><th>Targets hit</th><th>Drive links submitted</th></tr></thead>
+    <tbody>`;
+
+  MEMBERS.forEach(m=>{
+    const tasks=db.tasks.filter(t=>t.member_id===m.id);
+    const done=tasks.filter(t=>t.status==='done').length;
+    const total=tasks.length;
+    const pct=total?Math.round(done/total*100):0;
+    const links=tasks.filter(t=>t.drive_link).length;
+    const targetsHit=calcTargetsHit(m);
+    html+=`<tr>
+      <td><div style="display:flex;align-items:center;gap:8px;"><div class="avatar" style="width:26px;height:26px;font-size:10px;background:${m.bg};color:${m.color};">${m.initials}</div>${m.name}</div></td>
+      <td>${total}</td>
+      <td>${done}</td>
+      <td><span style="color:${pct>=80?'var(--green)':pct>=50?'var(--amber)':'var(--red)'};">${pct}%</span></td>
+      <td>${targetsHit}</td>
+      <td>${links}</td>
+    </tr>`;
+  });
+  html+=`</tbody></table>`;
+
+  // Blocked items
+  const blocked=db.tasks.filter(t=>t.status==='blocked');
+  if(blocked.length){
+    html+=`<div class="alert alert-warn" style="margin-bottom:16px;">⚠️ ${blocked.length} blocked task${blocked.length>1?'s':''} need attention</div>`;
+  }
+
+  // Tomorrow plans
+  html+=`<div class="section-title" style="margin-bottom:10px;">Tomorrow's plans submitted</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;">`;
+  MEMBERS.forEach(m=>{
+    const plans=db.tomorrow.filter(t=>t.member_id===m.id);
+    html+=`<div class="card-sm">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <div class="avatar" style="width:24px;height:24px;font-size:9px;background:${m.bg};color:${m.color};">${m.initials}</div>
+        <span style="font-size:12px;font-weight:600;">${m.name}</span>
+        ${plans.length?`<span class="badge badge-done" style="margin-left:auto;">${plans.length} tasks</span>`:`<span class="badge badge-todo" style="margin-left:auto;">Not yet</span>`}
+      </div>
+      ${plans.map(p=>`<div style="font-size:11px;color:var(--text2);padding:2px 0;">• ${escHtml(p.task_name)}</div>`).join('')}
+    </div>`;
+  });
+  html+=`</div>`;
+
+  // Export button (owner only)
+  if(currentRole==='owner'){
+    html+=`<div style="margin-top:20px;"><button class="btn btn-primary" onclick="exportWeeklyCSV()">⬇ Export Weekly CSV</button></div>`;
+  }
+  return html;
+}
+
+function getWeekLabel(){
+  const d=new Date();
+  const mon=new Date(d); const dow=d.getDay(); const diff=dow===0?-6:1-dow;
+  mon.setDate(d.getDate()+diff);
+  const fri=new Date(mon); fri.setDate(mon.getDate()+4);
+  return mon.toLocaleDateString('en-GB',{day:'numeric',month:'short'})+' – '+fri.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+}
+
+function calcTargetsHit(m){
+  const tasks=db.tasks.filter(t=>t.member_id===m.id&&t.date===todayStr()&&t.status==='done');
+  let hits=[];
+  if(m.targets.ecards){ const n=tasks.filter(t=>t.task_type==='ecard').length; if(n>=m.targets.ecards) hits.push('eCards'); }
+  if(m.targets.stories){ const n=tasks.filter(t=>t.task_type==='story').length; if(n>=m.targets.stories) hits.push('Stories'); }
+  if(m.targets.shorts){ const n=tasks.filter(t=>t.task_type==='short').length; if(n>=m.targets.shorts) hits.push('Shorts'); }
+  if(m.targets.longform){ const n=tasks.filter(t=>t.task_type==='longform').length; if(n>=m.targets.longform) hits.push('Long-form'); }
+  return hits.length?hits.join(', '):'—';
+}
+
+/* ============================================================
+   REPORTS VIEW (Susan + Owner)
+   ============================================================ */
+function renderReports(){
+  let html=`<div class="section-header">
+    <span class="section-title">Reports & Analytics</span>
+    ${currentRole==='owner'?`<button class="btn btn-primary btn-sm" onclick="exportMonthlyCSV()">⬇ Export Monthly CSV</button>`:''}
+  </div>`;
+
+  // Social metrics
+  html+=`<div class="card" style="margin-bottom:16px;">
+    <div class="section-header" style="margin-bottom:12px;">
+      <span style="font-weight:600;">Social Media — Follower / Subscriber Tally</span>
+      ${(currentRole==='Susan'||currentRole==='owner')?`<button class="btn btn-sm" onclick="openSocialModal()">+ Log this week</button>`:''}
+    </div>`;
+
+  const latestSocial = db.social.length ? db.social[0] : null;
+  const prevSocial = db.social.length>1 ? db.social[1] : null;
+
+  html+=`<div class="platform-grid">`;
+  PLATFORMS.forEach(p=>{
+    const curr=latestSocial?Number(latestSocial['p_'+slugify(p)]||0):0;
+    const prev=prevSocial?Number(prevSocial['p_'+slugify(p)]||0):0;
+    const diff=curr-prev;
+    html+=`<div class="platform-card">
+      <div class="platform-name">${p}</div>
+      <div class="platform-num">${curr?curr.toLocaleString():'—'}</div>
+      ${curr&&diff!==0?`<div class="platform-change" style="color:${diff>0?'var(--green)':'var(--red)'};">${diff>0?'+':''}${diff.toLocaleString()} this week</div>`:''}
+    </div>`;
+  });
+  html+=`</div>`;
+
+  if(db.social.length){
+    html+=`<div style="font-size:11px;color:var(--text3);">Last updated: ${db.social[0].week_start} &nbsp;|&nbsp; ${db.social.length} week(s) on record</div>`;
+  }
+  html+=`</div>`;
+
+  // Leads log
+  html+=`<div class="card" style="margin-bottom:16px;">
+    <div class="section-header" style="margin-bottom:12px;">
+      <span style="font-weight:600;">Leads by Branch & Source</span>
+      ${(currentRole==='Susan'||currentRole==='owner')?`<button class="btn btn-sm" onclick="openLeadsModal()">+ Log leads</button>`:''}
+    </div>`;
+
+  if(!db.leads.length){
+    html+=`<div class="empty">No leads logged yet</div>`;
+  } else {
+    html+=`<table class="week-table"><thead><tr><th>Week</th><th>Branch</th><th>Source</th><th>Count</th></tr></thead><tbody>`;
+    db.leads.slice(0,20).forEach(l=>{
+      html+=`<tr><td>${l.week_start}</td><td>${escHtml(l.branch)}</td><td>${escHtml(l.source)}</td><td style="font-weight:600;">${l.count}</td></tr>`;
+    });
+    html+=`</tbody></table>`;
+  }
+  html+=`</div>`;
+
+  // Top content
+  html+=`<div class="card" style="margin-bottom:16px;">
+    <div class="section-header" style="margin-bottom:12px;">
+      <span style="font-weight:600;">Top Performing Content</span>
+      ${(currentRole==='Susan'||currentRole==='owner')?`<button class="btn btn-sm" onclick="openContentModal()">+ Log content</button>`:''}
+    </div>`;
+
+  if(!db.content.length){
+    html+=`<div class="empty">No content logged yet</div>`;
+  } else {
+    html+=`<table class="week-table"><thead><tr><th>Title</th><th>Platform</th><th>Metric</th><th>Value</th><th>Link</th></tr></thead><tbody>`;
+    db.content.slice(0,15).forEach(c=>{
+      html+=`<tr>
+        <td>${escHtml(c.title)}</td>
+        <td>${escHtml(c.platform)}</td>
+        <td style="color:var(--text2);">${escHtml(c.metric_type)}</td>
+        <td style="font-weight:600;">${Number(c.metric_value||0).toLocaleString()}</td>
+        <td>${c.post_link?`<a href="${escHtml(c.post_link)}" target="_blank" class="task-link">View ↗</a>`:'-'}</td>
+      </tr>`;
+    });
+    html+=`</tbody></table>`;
+  }
+  html+=`</div>`;
+
+  // Story reach
+  html+=`<div class="card">
+    <div class="section-header" style="margin-bottom:12px;">
+      <span style="font-weight:600;">Story Reach / Impressions</span>
+      ${(currentRole==='Susan'||currentRole==='owner')?`<button class="btn btn-sm" onclick="openStoryReachModal()">+ Log reach</button>`:''}
+    </div>`;
+  const storyTasks=db.tasks.filter(t=>t.task_type==='story'&&t.reach);
+  if(!storyTasks.length){
+    html+=`<div class="empty">No story reach data yet</div>`;
+  } else {
+    const totalReach=storyTasks.reduce((a,t)=>a+Number(t.reach||0),0);
+    html+=`<div class="metrics-grid" style="margin-bottom:0;">
+      <div class="metric"><div class="metric-label">Total reach this week</div><div class="metric-val" style="color:var(--pink);">${totalReach.toLocaleString()}</div></div>
+      <div class="metric"><div class="metric-label">Stories logged</div><div class="metric-val">${storyTasks.length}</div></div>
+      <div class="metric"><div class="metric-label">Avg per story</div><div class="metric-val">${storyTasks.length?Math.round(totalReach/storyTasks.length).toLocaleString():'—'}</div></div>
+    </div>`;
+  }
+  html+=`</div>`;
+
+  return html;
+}
+
+/* ============================================================
+   DASHBOARD VIEW (Owner only)
+   ============================================================ */
+function renderDashboard(){
+  // Calculate points per member
+  const points=MEMBERS.map(m=>({m, pts:calcPoints(m)}));
+  points.sort((a,b)=>b.pts-a.pts);
+
+  let html=`<div class="section-header"><span class="section-title">Performance Dashboard — Private</span></div>`;
+
+  // Leaderboard
+  html+=`<div class="card" style="margin-bottom:16px;">
+    <div style="font-weight:600;margin-bottom:14px;">🏆 Points Leaderboard — ${getWeekLabel()}</div>`;
+  points.forEach(({m,pts},i)=>{
+    const rankCls=i===0?'gold':i===1?'silver':i===2?'bronze':'';
+    const maxPts=points[0].pts||1;
+    const barPct=Math.round(pts/maxPts*100);
+    html+=`<div class="lb-row">
+      <div class="lb-rank ${rankCls}">${i+1}</div>
+      <div class="avatar" style="background:${m.bg};color:${m.color};">${m.initials}</div>
+      <div class="lb-bar-wrap">
+        <div class="lb-name">${m.name} <span style="font-size:11px;color:var(--text3);font-weight:400;">${m.role}</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:${barPct}%;background:${m.color};"></div></div>
+        <div class="lb-pts" style="margin-top:3px;">${getPointsBreakdown(m)}</div>
+      </div>
+      <div class="lb-score">${pts}</div>
+    </div>`;
+  });
+  html+=`<div style="font-size:11px;color:var(--text3);margin-top:10px;">Max daily: 100 pts per member · Points reset weekly</div>`;
+  html+=`</div>`;
+
+  // Points breakdown legend
+  html+=`<div class="card" style="margin-bottom:16px;">
+    <div style="font-weight:600;margin-bottom:10px;">Points system breakdown</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+      ${Object.entries({
+        'Task completed on time':'10 pts',
+        'Work submitted with Drive link':'5 pts',
+        'Tomorrow tasks pre-planned':'10 pts',
+        'No blocked tasks overnight':'10 pts',
+        'Bonface — eCards target (5)':'20 pts',
+        'Bethwel/Thiga — Shorts (3)':'15 pts',
+        'Bethwel/Thiga — Long-form (1)':'15 pts',
+        'Susan — Stories target (15)':'20 pts',
+        'Susan — Leads report updated':'10 pts',
+        'Susan — Content scheduled':'10 pts'
+      }).map(([k,v])=>`<div style="display:flex;justify-content:space-between;font-size:12px;padding:5px 8px;background:var(--bg3);border-radius:6px;"><span style="color:var(--text2);">${k}</span><span style="font-weight:600;color:var(--accent);">${v}</span></div>`).join('')}
+    </div>
+  </div>`;
+
+  // Monthly performance summary
+  html+=`<div class="card">
+    <div style="font-weight:600;margin-bottom:14px;">📈 Performance summary</div>
+    <table class="week-table">
+      <thead><tr><th>Member</th><th>Tasks done</th><th>Targets hit</th><th>Links submitted</th><th>Points</th><th>Rating</th></tr></thead>
+      <tbody>`;
+  points.forEach(({m,pts})=>{
+    const tasks=db.tasks.filter(t=>t.member_id===m.id);
+    const done=tasks.filter(t=>t.status==='done').length;
+    const links=tasks.filter(t=>t.drive_link).length;
+    const rating=pts>=80?'🟢 Excellent':pts>=60?'🟡 Good':pts>=40?'🟠 Fair':'🔴 Needs attention';
+    html+=`<tr>
+      <td><strong>${m.name}</strong></td>
+      <td>${done}</td>
+      <td>${calcTargetsHit(m)}</td>
+      <td>${links}</td>
+      <td style="font-weight:700;color:var(--accent);">${pts}</td>
+      <td>${rating}</td>
+    </tr>`;
+  });
+  html+=`</tbody></table>
+    <div style="margin-top:12px;"><button class="btn btn-primary" onclick="exportHRReport()">⬇ Export HR Report</button></div>
+  </div>`;
+
+  return html;
+}
+
+/* ============================================================
+   ON LEAVE TOGGLE
+   ============================================================ */
+async function toggleLeave(memberId, date){
+  const isCurrentlyOnLeave = state.onLeave[date]?.[memberId];
+  if(isCurrentlyOnLeave){
+    // Remove leave — delete from DB
+    await sbFetch('leave_log?member_id=eq.'+memberId+'&date=eq.'+date,'DELETE');
+    if(state.onLeave[date]) delete state.onLeave[date][memberId];
+  } else {
+    // Mark on leave
+    const res = await sbInsert('leave_log',{member_id:memberId, date, note:'On leave'});
+    if(!state.onLeave[date]) state.onLeave[date]={};
+    state.onLeave[date][memberId]=true;
+  }
+  showToast(isCurrentlyOnLeave?'Marked as back at work':'Marked as on leave','success');
+  render();
+}
+
+/* ============================================================
+   KEVIN'S TASKS VIEW
+   ============================================================ */
+function renderKevinTasks(){
+  const today = todayStr();
+  const tasks = db.kevinTasks;
+  const todayTasks = tasks.filter(t=>t.date===today);
+  const done = todayTasks.filter(t=>t.status==='done').length;
+  const total = todayTasks.length;
+  const pct = total?Math.round(done/total*100):0;
+
+  let html=`<div class="section-header">
+    <span class="section-title">My Tasks — Digital Lead</span>
+    <button class="btn btn-primary btn-sm" onclick="openAddKevinTaskModal()">+ Add my task</button>
+  </div>`;
+
+  // Today's metrics
+  html+=`<div class="metrics-grid" style="margin-bottom:16px;">
+    <div class="metric"><div class="metric-label">Today's tasks</div><div class="metric-val">${total}</div></div>
+    <div class="metric"><div class="metric-label">Done</div><div class="metric-val" style="color:var(--green);">${done}</div></div>
+    <div class="metric"><div class="metric-label">Completion</div><div class="metric-val" style="color:${pct>=80?'var(--green)':pct>=50?'var(--amber)':'var(--red)'};">${pct}%</div></div>
+    <div class="metric"><div class="metric-label">This week</div><div class="metric-val">${tasks.length}</div></div>
+  </div>`;
+
+  // Today's tasks
+  html+=`<div class="card" style="margin-bottom:16px;">
+    <div style="font-weight:600;margin-bottom:12px;">Today — ${new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'short'})}</div>`;
+  if(!todayTasks.length){
+    html+=`<div class="empty">No tasks yet for today. Add one above.</div>`;
+  } else {
+    todayTasks.forEach(t=>{
+      const badgeCls={'done':'badge-done','in-progress':'badge-inprog','todo':'badge-todo','blocked':'badge-blocked'}[t.status]||'badge-todo';
+      const priorityCls={'high':'badge-high','medium':'badge-medium','low':'badge-low','routine':'badge-routine'}[t.priority]||'badge-low';
+      html+=`<div class="task-item">
+        <div class="task-check ${t.status==='done'?'done':t.status==='in-progress'?'inprog':''}" onclick="cycleKevinTask('${t.id}','${t.status}')">
+          ${t.status==='done'?'<svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>':
+            t.status==='in-progress'?'<div style="width:6px;height:6px;border-radius:50%;background:white;"></div>':''}
+        </div>
+        <div class="task-body">
+          <div class="task-name ${t.status==='done'?'done-text':''}">${escHtml(t.task_name)}</div>
+          <div class="task-meta">
+            <span class="badge ${priorityCls}">${t.priority}</span>
+            <span class="badge ${badgeCls}">${t.status}</span>
+            ${t.deadline?`<span>📅 ${t.deadline}</span>`:''}
+            ${t.notes?`<span style="color:var(--text3);">${escHtml(t.notes)}</span>`:''}
+          </div>
+        </div>
+        <div style="display:flex;gap:6px;">
+          <button class="btn btn-ghost btn-sm" onclick="deleteKevinTask('${t.id}')">🗑</button>
+        </div>
+      </div>`;
+    });
+  }
+  html+=`</div>`;
+
+  // This week's tasks grouped by day
+  const weekTasks = tasks.filter(t=>t.date!==today);
+  if(weekTasks.length){
+    const byDate={};
+    weekTasks.forEach(t=>{ if(!byDate[t.date]) byDate[t.date]=[]; byDate[t.date].push(t); });
+    html+=`<div class="card"><div style="font-weight:600;margin-bottom:12px;">Earlier this week</div>`;
+    Object.keys(byDate).sort().reverse().forEach(date=>{
+      const dayLabel=new Date(date).toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'short'});
+      const dayDone=byDate[date].filter(t=>t.status==='done').length;
+      html+=`<div style="margin-bottom:12px;">
+        <div style="font-size:11px;color:var(--text2);font-weight:600;margin-bottom:6px;">${dayLabel} · ${dayDone}/${byDate[date].length} done</div>`;
+      byDate[date].forEach(t=>{
+        html+=`<div style="font-size:12px;padding:3px 0;color:${t.status==='done'?'var(--text3)':'var(--text2)'};">
+          ${t.status==='done'?'✓':'○'} <span style="${t.status==='done'?'text-decoration:line-through;':''}">${escHtml(t.task_name)}</span>
+          <span class="badge badge-${t.priority==='high'?'high':t.priority==='medium'?'medium':'low'}" style="margin-left:4px;">${t.priority}</span>
+        </div>`;
+      });
+      html+=`</div>`;
+    });
+    html+=`</div>`;
+  }
+
+  html+=`<div style="margin-top:12px;"><button class="btn" onclick="exportKevinTasks()">⬇ Export my tasks CSV</button></div>`;
+  return html;
+}
+
+function openAddKevinTaskModal(){
+  openModal(`<div class="modal-backdrop" onclick="if(event.target===this)closeModal()">
+    <div class="modal">
+      <div class="modal-header"><div class="modal-title">Add My Task</div><button class="btn btn-ghost btn-sm" onclick="closeModal()">✕</button></div>
+      <div class="modal-body">
+        <div class="form-group"><label class="form-label">Task</label>
+          <input class="form-control" id="kt-name" placeholder="e.g. Update website homepage, Write SEO article..." autofocus/></div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Priority</label>
+            <select class="form-control" id="kt-priority">
+              <option value="high">High</option><option value="medium" selected>Medium</option><option value="low">Low</option>
+            </select></div>
+          <div class="form-group"><label class="form-label">Deadline (optional)</label>
+            <input class="form-control" type="date" id="kt-deadline"/></div>
+        </div>
+        <div class="form-group"><label class="form-label">Notes (optional)</label>
+          <input class="form-control" id="kt-notes" placeholder="Any context..."/></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="submitKevinTask()">Add</button>
+      </div>
+    </div>
+  </div>`);
+}
+
+async function submitKevinTask(){
+  const name=document.getElementById('kt-name').value.trim();
+  if(!name){ showToast('Enter a task name','error'); return; }
+  const data={ member_id:'Kevin', task_name:name, priority:document.getElementById('kt-priority').value,
+    deadline:document.getElementById('kt-deadline').value||null, notes:document.getElementById('kt-notes').value.trim()||null,
+    status:'todo', date:todayStr(), task_type:'general' };
+  const res=await sbInsert('tasks',data);
+  if(res){ db.kevinTasks.unshift(res[0]||data); showToast('Task added','success'); closeModal(); render(); }
+  else showToast('Error saving','error');
+}
+
+async function cycleKevinTask(id,current){
+  const cycle={todo:'in-progress','in-progress':'done',done:'todo',blocked:'todo'};
+  const next=cycle[current]||'todo';
+  await sbUpdate('tasks',id,{status:next});
+  const t=db.kevinTasks.find(x=>x.id==id); if(t) t.status=next;
+  render();
+}
+
+async function deleteKevinTask(id){
+  if(!confirm('Delete this task?')) return;
+  await sbDelete('tasks',id);
+  db.kevinTasks=db.kevinTasks.filter(t=>t.id!=id);
+  showToast('Deleted','success'); render();
+}
+
+function exportKevinTasks(){
+  const rows=[['Date','Task','Priority','Status','Deadline','Notes'],
+    ...db.kevinTasks.map(t=>[t.date,t.task_name,t.priority,t.status,t.deadline||'',t.notes||''])];
+  downloadCSV(rows,'kevin-tasks-'+todayStr()+'.csv');
+  showToast('Exported','success');
+}
+
+/* ============================================================
+   CALENDAR VIEW
+   ============================================================ */
+let calendarDate = todayStr();
+
+function renderCalendar(){
+  const selDate = calendarDate;
+  const selDateFmt = new Date(selDate).toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+
+  // Get all tasks and leave for selected date
+  const allTasks = [...db.tasks,...db.kevinTasks].filter(t=>t.date===selDate);
+  const leaveOnDay = state.onLeave[selDate]||{};
+  const onLeaveMembers = MEMBERS.filter(m=>leaveOnDay[m.id]);
+  const workingMembers = MEMBERS.filter(m=>!leaveOnDay[m.id]);
+
+  let html=`<div class="section-header">
+    <span class="section-title">Calendar — Day view</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap;">
+    <input type="date" class="form-control" style="width:auto;" value="${selDate}" onchange="calendarDate=this.value;render()"/>
+    <span style="font-size:14px;font-weight:500;color:var(--text);">${selDateFmt}</span>
+    ${selDate===todayStr()?'<span class="badge badge-done">Today</span>':''}
+    <button class="btn btn-sm" onclick="calendarDate=todayStr();render()">Go to today</button>
+  </div>`;
+
+  // On leave banner
+  if(onLeaveMembers.length){
+    html+=`<div class="alert alert-warn" style="margin-bottom:16px;">🏖 On leave: ${onLeaveMembers.map(m=>m.name).join(', ')}</div>`;
+  }
+
+  // Summary metrics for selected day
+  const done=allTasks.filter(t=>t.status==='done').length;
+  const total=allTasks.length;
+  html+=`<div class="metrics-grid" style="margin-bottom:20px;">
+    <div class="metric"><div class="metric-label">Tasks on this day</div><div class="metric-val">${total}</div></div>
+    <div class="metric"><div class="metric-label">Completed</div><div class="metric-val" style="color:var(--green);">${done}</div></div>
+    <div class="metric"><div class="metric-label">Not done</div><div class="metric-val" style="color:var(--red);">${allTasks.filter(t=>t.status!=='done').length}</div></div>
+    <div class="metric"><div class="metric-label">On leave</div><div class="metric-val" style="color:var(--amber);">${onLeaveMembers.length}</div></div>
+  </div>`;
+
+  // Per-member breakdown
+  [...MEMBERS,{id:'Kevin',name:'Kevin (Digital Lead)',color:'#3d7eff',bg:'rgba(61,126,255,0.15)',initials:'KV'}].forEach(m=>{
+    const mTasks = (m.id==='Kevin'?db.kevinTasks:db.tasks).filter(t=>t.member_id===m.id&&t.date===selDate);
+    const onLeave = leaveOnDay[m.id];
+    if(!mTasks.length && !onLeave) return;
+    const mDone=mTasks.filter(t=>t.status==='done').length;
+    html+=`<div class="card-sm" style="margin-bottom:10px;${onLeave?'opacity:0.6;':''}">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+        <div class="avatar" style="width:28px;height:28px;font-size:10px;background:${m.bg};color:${m.color};">${m.initials}</div>
+        <span style="font-weight:600;font-size:13px;">${m.name}</span>
+        ${onLeave?'<span style="font-size:11px;background:rgba(245,158,11,0.2);color:#f59e0b;padding:2px 8px;border-radius:99px;">🏖 On Leave</span>':''}
+        <span style="margin-left:auto;font-size:12px;color:var(--text2);">${mDone}/${mTasks.length} done</span>
+      </div>
+      ${mTasks.map(t=>`<div style="font-size:12px;padding:3px 0;display:flex;align-items:center;gap:6px;">
+        <span style="color:${t.status==='done'?'var(--green)':t.status==='blocked'?'var(--red)':'var(--text3)'};">${t.status==='done'?'✓':t.status==='blocked'?'!':'○'}</span>
+        <span style="${t.status==='done'?'text-decoration:line-through;color:var(--text3);':''}">${escHtml(t.task_name)}</span>
+        <span class="badge badge-${t.priority==='high'?'high':t.priority==='medium'?'medium':'low'}">${t.priority}</span>
+        ${t.drive_link?`<a href="${escHtml(t.drive_link)}" target="_blank" class="task-link">🔗</a>`:''}
+      </div>`).join('')}
+    </div>`;
+  });
+
+  if(!allTasks.length && !onLeaveMembers.length){
+    html+=`<div class="empty"><div class="empty-icon">📆</div>No activity recorded for this date.</div>`;
+  }
+
+  html+=`<div style="margin-top:16px;"><button class="btn" onclick="exportDayCSV('${selDate}')">⬇ Export this day</button></div>`;
+  return html;
+}
+
+function exportDayCSV(date){
+  const tasks=[...db.tasks,...db.kevinTasks].filter(t=>t.date===date);
+  const rows=[['Date','Member','Task','Status','Priority','Drive Link'],
+    ...tasks.map(t=>[t.date,t.member_id,t.task_name,t.status,t.priority,t.drive_link||''])];
+  downloadCSV(rows,'amcco-day-'+date+'.csv');
+  showToast('Day exported','success');
+}
+
+function calcPoints(m){
+  const tasks=db.tasks.filter(t=>t.member_id===m.id&&t.date===todayStr());
+  const done=tasks.filter(t=>t.status==='done');
+  let pts=0;
+  pts+=Math.min(30,done.length*POINTS_CONFIG.task_completed);
+  pts+=Math.min(15,done.filter(t=>t.drive_link).length*POINTS_CONFIG.task_with_link);
+  if(db.tomorrow.some(t=>t.member_id===m.id)) pts+=POINTS_CONFIG.preplanned;
+  if(!tasks.some(t=>t.status==='blocked')) pts+=POINTS_CONFIG.no_blocked_overnight;
+  if(m.targets.ecards){ const n=done.filter(t=>t.task_type==='ecard').length; if(n>=m.targets.ecards) pts+=POINTS_CONFIG.ecards_target; }
+  if(m.targets.stories){ const n=done.filter(t=>t.task_type==='story').length; if(n>=m.targets.stories) pts+=POINTS_CONFIG.stories_target; }
+  if(m.targets.shorts){ const n=done.filter(t=>t.task_type==='short').length; if(n>=m.targets.shorts) pts+=POINTS_CONFIG.shorts_target; }
+  if(m.targets.longform){ const n=done.filter(t=>t.task_type==='longform').length; if(n>=m.targets.longform) pts+=POINTS_CONFIG.longform_target; }
+  if(m.id==='Susan'){ if(tasks.some(t=>t.task_type==='leads'&&t.status==='done')) pts+=POINTS_CONFIG.leads_updated; if(tasks.some(t=>t.task_type==='content'&&t.status==='done')) pts+=POINTS_CONFIG.content_scheduled; }
+  return Math.min(100,pts);
+}
+
+function getPointsBreakdown(m){
+  const tasks=db.tasks.filter(t=>t.member_id===m.id&&t.date===todayStr());
+  const done=tasks.filter(t=>t.status==='done').length;
+  const links=tasks.filter(t=>t.drive_link&&t.status==='done').length;
+  const planned=db.tomorrow.some(t=>t.member_id===m.id)?'✓ planned':'';
+  return `${done} done · ${links} links · ${planned}`;
+}
+
+/* ============================================================
+   MODALS
+   ============================================================ */
+function openModal(html){ document.getElementById('modal-container').innerHTML=html; }
+function closeModal(){ document.getElementById('modal-container').innerHTML=''; }
+
+function openAddTaskModal(memberId){
+  const memberOpts=MEMBERS.map(m=>`<option value="${m.id}" ${memberId===m.id?'selected':''}>${m.name}</option>`).join('');
+  openModal(`<div class="modal-backdrop" onclick="if(event.target===this)closeModal()">
+    <div class="modal">
+      <div class="modal-header"><div class="modal-title">Add Task</div><button class="btn btn-ghost btn-sm" onclick="closeModal()">✕</button></div>
+      <div class="modal-body">
+        <div class="form-group"><label class="form-label">Assign to</label>
+          <select class="form-control" id="f-member">${memberOpts}</select></div>
+        <div class="form-group"><label class="form-label">Task name</label>
+          <input class="form-control" id="f-name" placeholder="Describe the task..." autofocus/></div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Priority</label>
+            <select class="form-control" id="f-priority"><option value="high">High</option><option value="medium" selected>Medium</option><option value="low">Low</option><option value="routine">Routine</option></select></div>
+          <div class="form-group"><label class="form-label">Task type</label>
+            <select class="form-control" id="f-type"><option value="general">General</option><option value="ecard">eCard</option><option value="story">Story</option><option value="short">Short video</option><option value="longform">Long-form video</option><option value="leads">Leads report</option><option value="content">Content scheduling</option><option value="print">Print design</option><option value="photo">Photography</option></select></div>
+        </div>
+        <div class="form-group"><label class="form-label">Deadline (optional)</label>
+          <input class="form-control" type="date" id="f-deadline"/></div>
+        <div class="form-group"><label class="form-label">Google Drive link (optional)</label>
+          <input class="form-control" id="f-link" placeholder="https://drive.google.com/..."/></div>
+        <div class="form-group"><label class="form-label">Notes</label>
+          <textarea class="form-control" id="f-notes" placeholder="Any context or instructions..."></textarea></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="submitTask()">Add Task</button>
+      </div>
+    </div>
+  </div>`);
+}
+
+async function submitTask(){
+  const name=document.getElementById('f-name').value.trim();
+  if(!name){ showToast('Please enter a task name','error'); return; }
+  const data={ member_id:document.getElementById('f-member').value, task_name:name, priority:document.getElementById('f-priority').value, task_type:document.getElementById('f-type').value, deadline:document.getElementById('f-deadline').value||null, drive_link:document.getElementById('f-link').value.trim()||null, notes:document.getElementById('f-notes').value.trim()||null, status:'todo', date:todayStr() };
+  const res=await sbInsert('tasks',data);
+  if(res){ db.tasks.push(res[0]||data); showToast('Task added','success'); closeModal(); render(); }
+  else showToast('Error saving task','error');
+}
+
+function openEditTaskModal(taskId){
+  const t=db.tasks.find(x=>x.id===taskId); if(!t) return;
+  openModal(`<div class="modal-backdrop" onclick="if(event.target===this)closeModal()">
+    <div class="modal">
+      <div class="modal-header"><div class="modal-title">Update Task</div><button class="btn btn-ghost btn-sm" onclick="closeModal()">✕</button></div>
+      <div class="modal-body">
+        <div class="form-group"><label class="form-label">Task name</label>
+          <input class="form-control" id="e-name" value="${escHtml(t.task_name)}"/></div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Status</label>
+            <select class="form-control" id="e-status">
+              ${['todo','in-progress','done','blocked'].map(s=>`<option value="${s}" ${t.status===s?'selected':''}>${s}</option>`).join('')}
+            </select></div>
+          <div class="form-group"><label class="form-label">Priority</label>
+            <select class="form-control" id="e-priority">
+              ${['high','medium','low','routine'].map(s=>`<option value="${s}" ${t.priority===s?'selected':''}>${s}</option>`).join('')}
+            </select></div>
+        </div>
+        <div class="form-group"><label class="form-label">Google Drive link</label>
+          <input class="form-control" id="e-link" value="${escHtml(t.drive_link||'')}" placeholder="https://drive.google.com/..."/></div>
+        <div class="form-group"><label class="form-label">Notes</label>
+          <textarea class="form-control" id="e-notes">${escHtml(t.notes||'')}</textarea></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveTask('${taskId}')">Save</button>
+      </div>
+    </div>
+  </div>`);
+}
+
+async function saveTask(id){
+  const data={ task_name:document.getElementById('e-name').value.trim(), status:document.getElementById('e-status').value, priority:document.getElementById('e-priority').value, drive_link:document.getElementById('e-link').value.trim()||null, notes:document.getElementById('e-notes').value.trim()||null };
+  await sbUpdate('tasks',id,data);
+  const idx=db.tasks.findIndex(t=>t.id==id);
+  if(idx>=0) Object.assign(db.tasks[idx],data);
+  showToast('Task updated','success'); closeModal(); render();
+}
+
+async function cycleStatus(id,current){
+  const cycle={todo:'in-progress','in-progress':'done',done:'todo',blocked:'todo'};
+  const next=cycle[current]||'todo';
+  await sbUpdate('tasks',id,{status:next});
+  const t=db.tasks.find(x=>x.id==id); if(t) t.status=next;
+  render();
+}
+
+async function deleteTask(id){
+  if(!confirm('Delete this task?')) return;
+  await sbDelete('tasks',id);
+  db.tasks=db.tasks.filter(t=>t.id!=id);
+  showToast('Task deleted','success'); render();
+}
+
+function openQCModal(taskId){
+  const t=db.tasks.find(x=>x.id===taskId)||{};
+  openModal(`<div class="modal-backdrop" onclick="if(event.target===this)closeModal()">
+    <div class="modal">
+      <div class="modal-header"><div class="modal-title">QC Note</div><button class="btn btn-ghost btn-sm" onclick="closeModal()">✕</button></div>
+      <div class="modal-body">
+        <div class="form-group"><label class="form-label">Your quality check note</label>
+          <textarea class="form-control" id="qc-text" placeholder="Feedback, revision request, or approval note...">${escHtml(t.qc_note||'')}</textarea></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveQCNote('${taskId}')">Save note</button>
+      </div>
+    </div>
+  </div>`);
+}
+
+async function saveQCNote(id){
+  const note=document.getElementById('qc-text').value.trim();
+  await sbUpdate('tasks',id,{qc_note:note,qc_reply:null});
+  const t=db.tasks.find(x=>x.id==id); if(t){t.qc_note=note;t.qc_reply=null;}
+  showToast('QC note saved — team member will see it','success'); closeModal(); render();
+}
+
+function openQCReplyModal(taskId){
+  openModal(`<div class="modal-backdrop" onclick="if(event.target===this)closeModal()">
+    <div class="modal">
+      <div class="modal-header"><div class="modal-title">Reply to QC Note</div><button class="btn btn-ghost btn-sm" onclick="closeModal()">✕</button></div>
+      <div class="modal-body">
+        <div class="form-group"><label class="form-label">Your reply</label>
+          <textarea class="form-control" id="qc-reply-text" placeholder="Your response or update..."></textarea></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveQCReply('${taskId}')">Send reply</button>
+      </div>
+    </div>
+  </div>`);
+}
+
+async function saveQCReply(id){
+  const reply=document.getElementById('qc-reply-text').value.trim();
+  await sbUpdate('tasks',id,{qc_reply:reply});
+  const t=db.tasks.find(x=>x.id==id); if(t) t.qc_reply=reply;
+  showToast('Reply sent','success'); closeModal(); render();
+}
+
+function openMutationModal(time){
+  openModal(`<div class="modal-backdrop" onclick="if(event.target===this)closeModal()">
+    <div class="modal">
+      <div class="modal-header"><div class="modal-title">Mutation check-in · ${time}</div><button class="btn btn-ghost btn-sm" onclick="closeModal()">✕</button></div>
+      <div class="modal-body">
+        <div class="form-group"><label class="form-label">Were there any changes?</label>
+          <select class="form-control" id="m-change" onchange="toggleMutationNote(this.value)">
+            <option value="yes">Yes — projects were updated</option>
+            <option value="no">No change</option>
+          </select></div>
+        <div class="form-group" id="m-note-wrap">
+          <label class="form-label">Which projects changed? Add notes:</label>
+          <textarea class="form-control" id="m-notes" placeholder="e.g. Plot A23 — marked Sold, Plot B7 — Released..."></textarea></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveMutation('${time}')">Log check-in</button>
+      </div>
+    </div>
+  </div>`);
+}
+
+function toggleMutationNote(val){
+  document.getElementById('m-note-wrap').style.display=val==='no'?'none':'';
+}
+
+async function saveMutation(time){
+  const noChange=document.getElementById('m-change').value==='no';
+  const notes=noChange?'':document.getElementById('m-notes').value.trim();
+  const data={ member_id:'Bonface', slot_time:time, date:todayStr(), no_change:noChange, notes:notes||null };
+  const res=await sbInsert('mutations',data);
+  if(res){ db.mutations.push(res[0]||data); showToast('Check-in logged','success'); closeModal(); render(); }
+  else showToast('Error saving','error');
+}
+
+function openTomorrowModal(memberId){
+  const m=MEMBERS.find(x=>x.id===memberId)||{};
+  openModal(`<div class="modal-backdrop" onclick="if(event.target===this)closeModal()">
+    <div class="modal">
+      <div class="modal-header"><div class="modal-title">Tomorrow's plan — ${m.name}</div><button class="btn btn-ghost btn-sm" onclick="closeModal()">✕</button></div>
+      <div class="modal-body">
+        <div class="form-group"><label class="form-label">Task for tomorrow</label>
+          <input class="form-control" id="t-name" placeholder="What will you work on?"/></div>
+        <div class="form-group"><label class="form-label">Google Drive link (optional)</label>
+          <input class="form-control" id="t-link" placeholder="https://drive.google.com/..."/></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveTomorrow('${memberId}')">Add to plan</button>
+      </div>
+    </div>
+  </div>`);
+}
+
+async function saveTomorrow(memberId){
+  const name=document.getElementById('t-name').value.trim();
+  if(!name) return;
+  const data={ member_id:memberId, task_name:name, drive_link:document.getElementById('t-link').value.trim()||null, date:todayStr() };
+  const res=await sbInsert('tomorrow_plans',data);
+  if(res){ db.tomorrow.push(res[0]||data); showToast('Plan added','success'); closeModal(); render(); }
+  else showToast('Error saving','error');
+}
+
+function openAddIntrayModal(){
+  const memberOpts=MEMBERS.map(m=>`<option value="${m.id}">${m.name}</option>`).join('');
+  openModal(`<div class="modal-backdrop" onclick="if(event.target===this)closeModal()">
+    <div class="modal">
+      <div class="modal-header"><div class="modal-title">Add to In-tray</div><button class="btn btn-ghost btn-sm" onclick="closeModal()">✕</button></div>
+      <div class="modal-body">
+        <div class="form-group"><label class="form-label">Deliverable / task</label>
+          <input class="form-control" id="i-title" placeholder="What needs to be done?" autofocus/></div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Assign to</label>
+            <select class="form-control" id="i-assignee">${memberOpts}</select></div>
+          <div class="form-group"><label class="form-label">Priority</label>
+            <select class="form-control" id="i-priority"><option value="high">High</option><option value="medium" selected>Medium</option><option value="low">Low</option></select></div>
+        </div>
+        <div class="form-group"><label class="form-label">Deadline (optional)</label>
+          <input class="form-control" type="date" id="i-deadline"/></div>
+        <div class="form-group"><label class="form-label">Instructions / notes</label>
+          <textarea class="form-control" id="i-note" placeholder="Context, deadline details, delivery instructions..."></textarea></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="submitIntray()">Send to In-tray</button>
+      </div>
+    </div>
+  </div>`);
+}
+
+async function submitIntray(){
+  const title=document.getElementById('i-title').value.trim();
+  if(!title){ showToast('Please enter a title','error'); return; }
+  const data={ title, assignee_id:document.getElementById('i-assignee').value, priority:document.getElementById('i-priority').value, deadline:document.getElementById('i-deadline').value||null, note:document.getElementById('i-note').value.trim()||null, status:'open', from_name:'Kevin (Digital Lead)' };
+  const res=await sbInsert('intray',data);
+  if(res){ db.intray.unshift(res[0]||data); showToast('Added to in-tray','success'); closeModal(); render(); updateIntrayBadge(); }
+  else showToast('Error saving','error');
+}
+
+async function markIntrayDone(id){
+  await sbUpdate('intray',id,{status:'done'});
+  const i=db.intray.find(x=>x.id==id); if(i) i.status='done';
+  showToast('Marked as done','success'); render(); updateIntrayBadge();
+}
+
+async function deleteIntray(id){
+  if(!confirm('Delete this item?')) return;
+  await sbDelete('intray',id);
+  db.intray=db.intray.filter(i=>i.id!=id);
+  showToast('Deleted','success'); render(); updateIntrayBadge();
+}
+
+// Social metrics modal
+function openSocialModal(){
+  const fields=PLATFORMS.map(p=>`<div class="form-group"><label class="form-label">${p}</label>
+    <input class="form-control" id="s-${slugify(p)}" type="number" placeholder="Followers / subscribers"/></div>`).join('');
+  openModal(`<div class="modal-backdrop" onclick="if(event.target===this)closeModal()">
+    <div class="modal">
+      <div class="modal-header"><div class="modal-title">Log Social Media Numbers</div><button class="btn btn-ghost btn-sm" onclick="closeModal()">✕</button></div>
+      <div class="modal-body">${fields}</div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveSocial()">Save</button>
+      </div>
+    </div>
+  </div>`);
+}
+
+async function saveSocial(){
+  const weekStart=getMondayStr();
+  const data={week_start:weekStart};
+  PLATFORMS.forEach(p=>{ const v=document.getElementById('s-'+slugify(p)).value; if(v) data['p_'+slugify(p)]=Number(v); });
+  const res=await sbInsert('social_metrics',data);
+  if(res){ db.social.unshift(res[0]||data); showToast('Social metrics saved','success'); closeModal(); render(); }
+  else showToast('Error saving','error');
+}
+
+// Leads modal
+function openLeadsModal(){
+  const branchOpts=BRANCHES.map(b=>`<option value="${b}">${b}</option>`).join('');
+  const sourceOpts=LEAD_SOURCES.map(s=>`<option value="${s}">${s}</option>`).join('');
+  openModal(`<div class="modal-backdrop" onclick="if(event.target===this)closeModal()">
+    <div class="modal">
+      <div class="modal-header"><div class="modal-title">Log Leads by Branch</div><button class="btn btn-ghost btn-sm" onclick="closeModal()">✕</button></div>
+      <div class="modal-body">
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Branch</label>
+            <select class="form-control" id="l-branch">${branchOpts}</select></div>
+          <div class="form-group"><label class="form-label">Source</label>
+            <select class="form-control" id="l-source">${sourceOpts}</select></div>
+        </div>
+        <div class="form-group"><label class="form-label">Number of leads</label>
+          <input class="form-control" id="l-count" type="number" min="0" placeholder="0"/></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveLeads()">Save</button>
+      </div>
+    </div>
+  </div>`);
+}
+
+async function saveLeads(){
+  const count=Number(document.getElementById('l-count').value);
+  if(!count){ showToast('Enter a lead count','error'); return; }
+  const data={ week_start:getMondayStr(), branch:document.getElementById('l-branch').value, source:document.getElementById('l-source').value, count };
+  const res=await sbInsert('leads_log',data);
+  if(res){ db.leads.unshift(res[0]||data); showToast('Leads logged','success'); closeModal(); render(); }
+  else showToast('Error saving','error');
+}
+
+// Content modal
+function openContentModal(){
+  const platformOpts=PLATFORMS.map(p=>`<option value="${p}">${p}</option>`).join('');
+  openModal(`<div class="modal-backdrop" onclick="if(event.target===this)closeModal()">
+    <div class="modal">
+      <div class="modal-header"><div class="modal-title">Log Top Performing Content</div><button class="btn btn-ghost btn-sm" onclick="closeModal()">✕</button></div>
+      <div class="modal-body">
+        <div class="form-group"><label class="form-label">Content title / description</label>
+          <input class="form-control" id="c-title" placeholder="e.g. Sunday service highlight reel"/></div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Platform</label>
+            <select class="form-control" id="c-platform">${platformOpts}</select></div>
+          <div class="form-group"><label class="form-label">Metric type</label>
+            <select class="form-control" id="c-metric">
+              <option>Views</option><option>Likes</option><option>Shares</option><option>Saves</option><option>Reach</option><option>Comments</option>
+            </select></div>
+        </div>
+        <div class="form-group"><label class="form-label">Metric value</label>
+          <input class="form-control" id="c-value" type="number" placeholder="e.g. 15000"/></div>
+        <div class="form-group"><label class="form-label">Link to post</label>
+          <input class="form-control" id="c-link" placeholder="https://..."/></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveContent()">Save</button>
+      </div>
+    </div>
+  </div>`);
+}
+
+async function saveContent(){
+  const title=document.getElementById('c-title').value.trim();
+  if(!title){ showToast('Enter a title','error'); return; }
+  const data={ title, platform:document.getElementById('c-platform').value, metric_type:document.getElementById('c-metric').value, metric_value:Number(document.getElementById('c-value').value)||0, post_link:document.getElementById('c-link').value.trim()||null };
+  const res=await sbInsert('content_log',data);
+  if(res){ db.content.unshift(res[0]||data); showToast('Content logged','success'); closeModal(); render(); }
+  else showToast('Error saving','error');
+}
+
+function openStoryReachModal(){
+  openModal(`<div class="modal-backdrop" onclick="if(event.target===this)closeModal()">
+    <div class="modal">
+      <div class="modal-header"><div class="modal-title">Log Story Reach</div><button class="btn btn-ghost btn-sm" onclick="closeModal()">✕</button></div>
+      <div class="modal-body">
+        <div class="form-group"><label class="form-label">Story description</label>
+          <input class="form-control" id="sr-name" placeholder="e.g. Monday morning devotion story"/></div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Reach</label>
+            <input class="form-control" id="sr-reach" type="number" placeholder="0"/></div>
+          <div class="form-group"><label class="form-label">Impressions</label>
+            <input class="form-control" id="sr-impressions" type="number" placeholder="0"/></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveStoryReach()">Save</button>
+      </div>
+    </div>
+  </div>`);
+}
+
+async function saveStoryReach(){
+  const name=document.getElementById('sr-name').value.trim()||'Story';
+  const reach=Number(document.getElementById('sr-reach').value)||0;
+  const data={ member_id:'Susan', task_name:name, task_type:'story', status:'done', date:todayStr(), reach, impressions:Number(document.getElementById('sr-impressions').value)||0, priority:'routine' };
+  const res=await sbInsert('tasks',data);
+  if(res){ db.tasks.push(res[0]||data); showToast('Story reach logged','success'); closeModal(); render(); }
+  else showToast('Error saving','error');
+}
+
+/* ============================================================
+   EXPORTS
+   ============================================================ */
+function exportWeeklyCSV(){
+  let rows=[['Member','Role','Tasks Planned','Tasks Done','Completion %','Targets Hit','Drive Links','Points']];
+  MEMBERS.forEach(m=>{
+    const tasks=db.tasks.filter(t=>t.member_id===m.id);
+    const done=tasks.filter(t=>t.status==='done').length;
+    const total=tasks.length;
+    const pct=total?Math.round(done/total*100):0;
+    rows.push([m.name,m.role,total,done,pct+'%',calcTargetsHit(m),tasks.filter(t=>t.drive_link).length,calcPoints(m)]);
+  });
+  downloadCSV(rows,'amcco-weekly-report-'+todayStr()+'.csv');
+  showToast('Weekly report exported','success');
+}
+
+function exportMonthlyCSV(){
+  let rows=[['=== AMCCO DIGITAL — MONTHLY REPORT ==='],[''],
+    ['TEAM PERFORMANCE'],['Member','Tasks Done','Points','Targets Hit'],
+    ...MEMBERS.map(m=>{
+      const done=db.tasks.filter(t=>t.member_id===m.id&&t.status==='done').length;
+      return [m.name,done,calcPoints(m),calcTargetsHit(m)];
+    }),
+    [''],['LEADS BY BRANCH'],['Week','Branch','Source','Count'],
+    ...db.leads.map(l=>[l.week_start,l.branch,l.source,l.count]),
+    [''],['SOCIAL MEDIA METRICS'],['Week',...PLATFORMS],
+    ...db.social.map(s=>[s.week_start,...PLATFORMS.map(p=>s['p_'+slugify(p)]||0)]),
+    [''],['TOP CONTENT'],['Title','Platform','Metric','Value','Link'],
+    ...db.content.map(c=>[c.title,c.platform,c.metric_type,c.metric_value,c.post_link||''])
+  ];
+  downloadCSV(rows,'amcco-monthly-report-'+getMondayStr()+'.csv');
+  showToast('Monthly report exported','success');
+}
+
+function exportHRReport(){
+  let rows=[['=== AMCCO DIGITAL — HR PERFORMANCE REPORT ==='],['Generated:',new Date().toLocaleDateString('en-GB')],[''],
+    ['Member','Role','Points (max 100)','Tasks Completed','Targets Hit','Work with Drive Links','Rating'],
+    ...MEMBERS.map(m=>{
+      const tasks=db.tasks.filter(t=>t.member_id===m.id);
+      const done=tasks.filter(t=>t.status==='done').length;
+      const pts=calcPoints(m);
+      const rating=pts>=80?'Excellent':pts>=60?'Good':pts>=40?'Fair':'Needs attention';
+      return [m.name,m.role,pts,done,calcTargetsHit(m),tasks.filter(t=>t.drive_link).length,rating];
+    }),
+    [''],['POINTS BREAKDOWN'],['Task completed on time','10 pts'],['Work submitted with Drive link','5 pts'],['Tomorrow pre-planned','10 pts'],['No blocked tasks','10 pts'],['Target bonuses','up to 20 pts']
+  ];
+  downloadCSV(rows,'amcco-hr-report-'+todayStr()+'.csv');
+  showToast('HR report exported','success');
+}
+
+function downloadCSV(rows,filename){
+  const csv=rows.map(r=>Array.isArray(r)?r.map(v=>`"${String(v||'').replace(/"/g,'""')}"`).join(','):r).join('\n');
+  const blob=new Blob([csv],{type:'text/csv'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=filename; a.click();
+}
+
+/* ============================================================
+   UTILITIES
+   ============================================================ */
+function getMondayStr(){
+  const d=new Date(); const dow=d.getDay(); const diff=dow===0?-6:1-dow;
+  d.setDate(d.getDate()+diff); return d.toISOString().split('T')[0];
+}
+function slugify(s){ return s.toLowerCase().replace(/[^a-z0-9]/g,'_'); }
+function escHtml(s){ if(!s) return ''; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function showToast(msg,type='success'){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className='toast '+type+' show';
+  setTimeout(()=>t.className='toast',3000);
+}
+
+function bindEvents(){ /* event delegation can be added here if needed */ }
+
+/* ============================================================
+   START
+   ============================================================ */
+renderSidebar();
+// Show nav for owner by default
+document.getElementById('nav-dashboard').style.display='';
+document.getElementById('nav-reports').style.display='';
+document.getElementById('nav-mytasks').style.display='';
+document.getElementById('nav-calendar').style.display='';
+init();
+}
+</script>
+</body>
+</html>
