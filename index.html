@@ -379,7 +379,7 @@ const sbDelete=(table,id)=>sbFetch(table+'?id=eq.'+id, 'DELETE');
 async function testConnection(){
   try {
     const url = SUPABASE_URL.replace(/\/$/, '')+'/rest/v1/tasks?limit=1';
-    console.log('Testing connection to:', url);
+    if(typeof diagLog === 'function') diagLog('Fetching: '+url);
     const r = await fetch(url, {
       headers:{ 
         'apikey': SUPABASE_KEY, 
@@ -387,9 +387,9 @@ async function testConnection(){
         'X-Client-Info': 'amcco-board/1.0'
       }
     });
-    console.log('Connection test status:', r.status);
+    if(typeof diagLog === 'function') diagLog('HTTP status: '+r.status);
     const body = await r.text();
-    console.log('Response body:', body.substring(0,200));
+    if(typeof diagLog === 'function') diagLog('Response: '+body.substring(0,150));
     if(r.status === 401) throw new Error('Invalid API key — status 401: '+body.substring(0,100));
     if(r.status === 404) throw new Error('Table not found — run the SQL setup');
     if(r.status === 400) throw new Error('Bad request 400: '+body.substring(0,100));
@@ -411,11 +411,17 @@ async function init(){
 
   // Show connecting state
   document.getElementById('content-area').innerHTML = `
-    <div style="text-align:center;padding:60px 20px;color:var(--text2);">
+    <div style="text-align:center;padding:40px 20px;color:var(--text2);max-width:600px;margin:0 auto;">
       <div style="font-size:32px;margin-bottom:12px;">⏳</div>
       <div style="font-size:15px;font-weight:600;margin-bottom:8px;">Connecting to database...</div>
-      <div style="font-size:12px;color:var(--text3);">Trying: ${SUPABASE_URL}</div>
+      <div style="font-size:12px;color:var(--text3);margin-bottom:16px;">URL: ${SUPABASE_URL}</div>
+      <div id="diag-log" style="text-align:left;background:#111;border-radius:8px;padding:12px;font-family:monospace;font-size:11px;color:#0f0;max-height:200px;overflow-y:auto;">Starting diagnostics...</div>
     </div>`;
+  
+  function diagLog(msg){ var el=document.getElementById('diag-log'); if(el){ el.textContent+=msg+' | '; el.scrollTop=el.scrollHeight; } console.log('[DIAG]',msg); }
+  diagLog('BUILD: 1778218920844348179');
+  diagLog('URL: '+SUPABASE_URL);
+  diagLog('KEY: '+SUPABASE_KEY.substring(0,20)+'...');
 
   try {
     await testConnection();
